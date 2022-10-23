@@ -1,16 +1,33 @@
-import React from 'react';
+import { GoogleAuthProvider } from 'firebase/auth';
+import React, { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { FaGoogle, FaGithub, FaFacebook, FaWhatsapp, FaTwitter, FaTwitch } from "react-icons/fa";
+import { AuthContext } from '../../../context/AuthProvider/AuthProvider';
 import BrandCarousal from '../BrandCarousal/BrandCarousal';
 
 
 const RightSideNav = () => {
+
+    const { providerLogin } = useContext(AuthContext);
+
+    const googleProvider = new GoogleAuthProvider();
+
+    const handleGoogleSignIn = () => {
+        providerLogin(googleProvider)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+
+            })
+            .catch(error => console.log(error))
+    }
+
     return (
         <div>
             <ButtonGroup vertical>
-                <Button className='mb-2' variant="outline-primary">
+                <Button onClick={handleGoogleSignIn} className='mb-2' variant="outline-primary">
                     <FaGoogle></FaGoogle> Login with Google</Button>
 
                 <Button variant="outline-dark">
@@ -22,8 +39,7 @@ const RightSideNav = () => {
                     <ListGroup.Item className='mb-2'><FaFacebook /> Facebook</ListGroup.Item>
                     <ListGroup.Item className='mb-2'><FaWhatsapp /> What's App</ListGroup.Item>
                     <ListGroup.Item className='mb-2'><FaTwitter /> Twitter</ListGroup.Item>
-                    <ListGroup.Item className='mb-2'><FaTwitch /> Twich</ListGroup.Item>
-                    <ListGroup.Item className='mb-2'>Vestibulum at eros</ListGroup.Item>
+                    <ListGroup.Item className='mb-2'><FaTwitch /> Twitch</ListGroup.Item>
                 </ListGroup>
             </div>
             <div>
